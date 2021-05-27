@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Livewire\Product;
+use App\Http\Livewire\Cart;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,5 +19,11 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/product', Product::class);
+    Route::get('/cart', Cart::class);
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    //Route::get('/logout', Logout::class)->name('logout');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
+
