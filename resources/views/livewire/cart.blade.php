@@ -72,7 +72,7 @@
                             <td>Rp {{number_format($cart['price'],0,',','.')}}</td>
                         </tr>
                         @empty
-                        <td colspan="3"><h6 class="text-center">Keranjang Kosong</h6></td>
+                        <td colspan="4"><h6 class="text-center">Keranjang Kosong</h6></td>
                         @endforelse
                     </tbody>
                 </table>
@@ -86,10 +86,10 @@
                 <h5 class="font-weight-bold">Total Bayar : Rp {{(number_format($summary['total'],0,',','.'))}}</h5>
                     <div class="row">
                             <div class="col-sm-6">
-                                <button wire:click="enableTax" class="btn btn-primary"> Biaya Administrasi </button>
+                                <button wire:click="enableTax" class="btn btn-primary"> Biaya Admin</button>
                             </div>
                             <div class="col-sm-6">
-                                <button wire:click="disableTax" class="btn btn-danger"> Tanpa Diskon Bayar Tetap </button>
+                                <button wire:click="disableTax" class="btn btn-danger"> Diskon 0% </button>
                             </div>
                         <div class="col-sm-12">
                             <center>
