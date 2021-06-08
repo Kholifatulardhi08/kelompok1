@@ -72,30 +72,44 @@ class Cart extends Component
     }
 
     public function addItem($id){
-        $rowId = 'Cart'.$id;
+        $rowId = "Cart".$id;
+        
+        
         $cart = \Cart::session(Auth()->id())->getContent();
-        $cekItemid = $cart->whereIn('id', $rowId);
+        $cekItemId = $cart->whereIn('id', $rowId);
 
-        if($cekItemid->isNotEmpty()){
-            \Cart::session(Auth()->id())->update($rowId, [
-                'quantity' => [
-                    'relative' => true,
-                    'value' => 1
-                ]
-            ]);
+        $idProduct = substr($rowId, 4,5 ); //perlu diadjust lagi
+        $product = ProductModel::find($idProduct);
+
+        if($cekItemId->isNotEmpty()){
+            if($product->qty == $cekItemId[$rowId]->quantity){
+                session()->flash('error', 'Jumlah item kurang');
+            }else{
+                \Cart::session(Auth()->id())->update($rowId, [
+                    'quantity' => [
+                        'relative' => true,
+                        'value' => 1
+                    ]
+                ]);
+            }
         }else{
-            $product = ProductModel::findOrFail($id);
-            \Cart::session(Auth()->id())->add([
-                'id'=> "Cart".$product->id,
-                'name' => $product->name,
-                'price' => $product->price,
-                'quantity' => 1,
-                'attributes' => [
-                    'added_at' => Carbon::now()
-                ],
-            ]);
+            if($product->qty == 0){
+                session()->flash('error', 'Jumlah item kurang');
+            }else{
+                \Cart::session(Auth()->id())->add([
+                    'id' => "Cart".$product->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'quantity' => 1,
+                    'attributes' => [
+                        'added_at' => Carbon::now()
+                    ],
+                ]);
+            }
+            
         }
     }
+
 
     public function enableTax(){
         $this->tax = "+5%";

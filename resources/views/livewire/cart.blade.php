@@ -1,23 +1,22 @@
 <div class="row">
      <div class="col-md-8">
         <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3"><h2 class="font-weight-bold">List Produk</h2></div>
-                    <div class="col-md-9"><input wire:model="search" type="text" class="form-control" placeholder="Cari Product..."></div>
+            <div class="card">
+                <div class="card-header bg-white">
+                    <div class="row">
+                        <div class="col-md-3"><h3 class="font-weight-bold">List Produk</h3></div>
+                        <div class="col-md-9"><input wire:model="search" type="text" class="form-control" placeholder="Cari Product..."></div>
+                    </div>
                 </div>
                 <br>
                 <div class="row">
                     @forelse ($products as $product)
                         <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <img src="{{ asset('storage/images/'.$product->image)}}" alt="product" style="object-fit: containt; width: 100%; height: 150px">
-                                </div>
-                                <div class="card-footer">
-                                    <h6 class="text-center font-weight-light">{{$product->name}}</h6>
-                                    <button wire:click="addItem({{$product->id}})" class="btn btn-dark btn-sm btn-block">Tambah Pesanan</button>
-                                </div>
+                            <div class="card" wire:click="addItem({{$product->id}})" style="cursor: pointer" >  
+                                    <img src="{{ asset('storage/images/'.$product->image)}}" alt="product" style="object-fit: containt; width: 100%; height: 170px">
+                                    <button wire:click="addItem({{$product->id}})" class="btn btn-dark btn-sm" style="position: absolute; top: :0; right:0; padding:10px 15px"><i class="fas fa-cart-plus"></i></button>                                
+                                    <h5 class="text-center font-weight-light mt-2">{{$product->name}}</h5>
+                                    <h6 class="text-center font-weight-light" style="color: rebeccapurple">Rp {{number_format($product->price,0,',','.')}}</h6>
                             </div>
                         </div>
                         @empty
@@ -34,33 +33,43 @@
     </div>
     <div class="col-md-4">
         <div class="card">
+            <div class="card-header bg-white">
+                <h3 class="font-weight-bold">Keranjang</h3>
+            </div>
             <div class="card-body">
-                <h2 class="font-weight-bold">Keranjang</h2>
                 <p class="text-danger font-weight-bold">
                     @if(session()->has('error'))
                         {{session('error')}}
                     @endif
                 </p>
                 <table class="table table-sm table-bordered table-striped table-hovered">
-                    <thead class="bg-secondary text-white ">
-                        <tr>
+                    <thead class="bg-secondary text-white">
+                        <tr class="text-center">
                             <th>No</th>
                             <th>Nama</th>
+                            <th>Jumlah</th>
                             <th>Harga</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             @forelse ($carts as $index=>$cart)
-                            <td>{{$index+1}}</td>
-                            <td> <a href="#" class="font-weight-bold text-dark">{{$cart['name']}}</a>
-                            <br>
-                            Qty : {{$cart['qty']}}
-                            <i class="fas fa-plus-square" wire:click="IncreaseItem('{{$cart['rowId']}}')" style="font-size:15px; cursor: pointer"></i>
-                            <i class="fas fa-trash-alt" wire:click="RemoveItem('{{$cart['rowId']}}')" style="font-size:15px; cursor: pointer; color: red"></i>
-                            <i class="fas fa-minus-square" wire:click="DecreaseItem('{{$cart['rowId']}}')" style="font-size:15px; cursor: pointer"></i>
+                            <td class="text-center">
+                                {{$index+1}}
+                                <br>
+                                <i class="fas fa-trash-alt" wire:click="RemoveItem('{{$cart['rowId']}}')" style="font-size:15px; cursor: pointer; color: purple"></i>
                             </td>
-                            <td>Rp {{number_format($cart['price'],2,',','.')}}</td>
+                            <td> 
+                                <a href="#" class="font-weight-bold text-dark">{{$cart['name']}}</a>
+                            <br>
+                            <a href="#">Rp {{number_format($cart['pricesingle'],0,',','.')}}</a>
+                            </td>
+                            <td class="text-center">
+                            <button class="btn-outline-primary btn-sm" style="padding: 7px 10px" wire:click="IncreaseItem('{{$cart['rowId']}}')"><i class="fas fa-plus-square"></i></button>    
+                                {{$cart['qty']}}
+                            <button class="btn-outline-primary btn-sm" style="padding: 7px 10px" wire:click="DecreaseItem('{{$cart['rowId']}}')"><i class="fas fa-minus-square"></i></button>
+                            </td>
+                            <td>Rp {{number_format($cart['price'],0,',','.')}}</td>
                         </tr>
                         @empty
                         <td colspan="3"><h6 class="text-center">Keranjang Kosong</h6></td>
@@ -72,16 +81,24 @@
         <div class="card">
             <div class="card-body">
                 <h4>Pembayaran</h4>
-                <h5 class="font-weight-bold">Sub Total : Rp {{(number_format($summary['sub_total'],2,',','.'))}}</h5>
-                <h5 class="font-weight-bold">Diskon : Rp {{(number_format($summary['pajak'],2,',','.'))}}</h5>
-                <h5 class="font-weight-bold">Total Bayar : Rp {{(number_format($summary['total'],2,',','.'))}}</h5>
-
-                <div>
-                    <button wire:click="enableTax" class="btn btn-primary"> Dapat Diskon </button>
-                    <button wire:click="disableTax" class="btn btn-danger"> Tanpa Diskon </button>
-                    <button class="btn btn-success"> Simpan Transaksi </button>
-                </div>
+                <h5 class="font-weight-bold">Sub Total : Rp {{(number_format($summary['sub_total'],0,',','.'))}}</h5>
+                <h5 class="font-weight-bold">Biaya Admin : Rp {{(number_format($summary['pajak'],0,',','.'))}}</h5>
+                <h5 class="font-weight-bold">Total Bayar : Rp {{(number_format($summary['total'],0,',','.'))}}</h5>
+                    <div class="row">
+                            <div class="col-sm-6">
+                                <button wire:click="enableTax" class="btn btn-primary"> Biaya Administrasi </button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button wire:click="disableTax" class="btn btn-danger"> Tanpa Diskon Bayar Tetap </button>
+                            </div>
+                        <div class="col-sm-12">
+                            <center>
+                                <button class="btn btn-success"> <i class="fas fa-save"></i> Simpan Transaksi </button>
+                            </center>
+                        </div>
+                    </div>
             </div>
+        </div>
         </div>
     </div>
 </div>
