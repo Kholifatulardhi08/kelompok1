@@ -6,15 +6,18 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Product as ProductModel;
 use Illuminate\Support\Facades\Storage;
+use Livewire\WithPagination;
 
 class Product extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     use WithFileUploads;
     public $name, $image, $description, $qty, $price;
 
     public function render()
     {
-        $products = ProductModel::orderBy('created_at', 'DESC')->get();
+        $products = ProductModel::orderBy('created_at', 'DESC')->paginate(2);
         return view('livewire.product',[
             'products' => $products
         ]);

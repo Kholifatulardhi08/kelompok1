@@ -29,6 +29,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div style="display:flex; justify-content:center">
+                    {{$products->links()}}
+                </div>
             </div>
         </div>
         <div class="col-md-4">
@@ -64,7 +67,7 @@
                                 <small class="text-danger">{{$message}}</small>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="text-center">
                             <label>Jumlah</label>
                             <input wire:model="qty" type="number" class="form-control">
                             @error('qty')
@@ -72,7 +75,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label>Harge</label>
+                            <label>Harga</label>
                             <input wire:model="price" type="text" class="form-control">
                             @error('price')
                                 <small class="text-danger">{{$message}}</small>
