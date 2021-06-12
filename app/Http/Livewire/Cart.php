@@ -21,7 +21,7 @@ class Cart extends Component
 
     public function render()
     {
-        $products = ProductModel::where('name', 'like', '%'.$this->search.'%')->orderBy('created_at', 'DESC')->paginate(3);
+        $products = ProductModel::where('name', 'like', '%'.$this->search.'%')->orderBy('created_at', 'DESC')->paginate(4);
         
         $condition = new \Darryldecode\Cart\CartCondition([
             'name' => 'pajak',
