@@ -30,5 +30,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/cart', Cart::class);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/logout', Logout::class)->name('logout');
+<<<<<<< HEAD
 });
 
+=======
+});
+>>>>>>> dc1ed3d761b2bf0925ce594f7c074089ee9e0385
