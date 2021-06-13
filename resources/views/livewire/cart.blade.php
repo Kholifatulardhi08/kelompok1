@@ -124,8 +124,8 @@
             const paymentAmount = document.getElementById("payment").value
             const totalAmount = document.getElementById("total").value
             const kembalian = paymentAmount - totalAmount
-            document.getElementById("kembalianText").innerHTML = `Rp ${rupiah(kembalian)} ,00`
-            document.getElementById("paymentText").innerHTML = `Rp ${rupiah(paymentAmount)} ,00`
+            document.getElementById("kembalianText").innerHTML = `Rp ${rupiah(kembalian)}`
+            document.getElementById("paymentText").innerHTML = `Rp ${rupiah(paymentAmount)}`
             const saveButton =  document.getElementById("saveButton")
             if(kembalian < 0){
                 saveButton.disabled = true

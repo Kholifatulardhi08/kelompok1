@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Product as ProductModel;
 use Carbon\Carbon;
 use Livewire\WithPagination;
+use DB;
 
 class Cart extends Component
 {
@@ -13,6 +14,7 @@ class Cart extends Component
     protected $paginationTheme = 'bootstrap';
     public $tax = "0%";
     public $search;
+    public $payment = 0;
 
     public function updatingSearch()
     {
@@ -164,5 +166,38 @@ class Cart extends Component
         \Cart::session(Auth()->id())->remove($rowId);
     }
 
-}
+    public function handleSubmit(){
+        $cartTotal = \Cart::session(Auth()->id())->getTotal();
+        $bayar = $this->payment;
+        $kembalian = (int) $bayar - (int) $cartTotal ;
 
+        if($kembalian >= 0){
+            DB::beginTransaction();
+            try {
+                $allCart = \Cart::session(Auth()->id())->getContent();
+
+                $filterCart = $allCart->map(function($item) {
+                    return[
+                        'id' => substr($item->id, 4,5),
+                        'quantity' => $item->quantity
+                    ];
+                });
+
+                foreach ($filterCart as $cart){
+                    $product = ProductModel::find($cart['id']);
+
+                    if($product ->qty === 0){
+                        return session()->flash('error', 'Jumlah item kurang');
+                    }
+
+                    $product->decrement('qty', $cart['quantity']);
+                }
+
+                DB::commit();
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return session()->flash('error', $th);
+            }
+        }
+    }
+}
