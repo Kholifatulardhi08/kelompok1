@@ -4,9 +4,12 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Product as ProductModel;
+use App\Models\Transaction;
+use App\Models\ProductTransaction;
 use Carbon\Carbon;
 use Livewire\WithPagination;
 use DB;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class Cart extends Component
 {
@@ -132,14 +135,18 @@ class Cart extends Component
         if($product->qty == $checkItem[$rowId]->quantity){
             session()->flash('error', 'Jumlah Item Tidak Memadai');
         }else{
-            \Cart::session(Auth()->id())->update($rowId, [
-                'quantity' => [
-                    'relative' => true,
-                    'value' => 1
-                ]
-            ]);
+            if($product->qty == $checkItem[$rowId]->quantity){
+                session()->flash('error', 'Jumlah item kurang');
+            }else{
+                \Cart::session(Auth()->id())->update($rowId, [
+                        'quantity' => [
+                        'relative' => true,
+                        'value' => 1
+                    ]
+                ]);
             }
         }
+    }
 
     //BRILLYANDY
     //menambah item otomatis
@@ -193,6 +200,30 @@ class Cart extends Component
                     $product->decrement('qty', $cart['quantity']);
                 }
 
+                $id = IdGenerator::generate([
+                    'table' => 'transaction',
+                    'length' => 10,
+                    'prefix' => 'INV-',
+                    'field' => 'invoice_number'
+                ]);
+
+                Transaction::create([
+                    'invoice_number' => $id,
+                    'user_id' => Auth()->id(),
+                    'pay' => $bayar,
+                    'total' => $cartTotal
+                ]);
+
+                foreach ($filterCart as $cart) {
+                    ProductTransaction::create([
+                        'product_id' => $cart['id'],
+                        'invoice_number' => $id,
+                        'qty' => $cart['quantity']
+                    ]);
+                }
+
+                \Cart::session(Auth()->id())->clear();
+                $this->payment = 0;
                 DB::commit();
             } catch (\Throwable $th) {
                 DB::rollback();
