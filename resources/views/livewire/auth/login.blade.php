@@ -31,7 +31,9 @@
                                 </button>
                             </div>
                             <div>
-                                <a href="/register">Register</a>
+                                <a class="fas fa-backward" href="/">Halaman Utama?</a><br>
+                                <a href="/register">Registrasi?</a>
+                                
                             </div>
                         </form>
                     </div>
