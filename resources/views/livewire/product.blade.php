@@ -6,13 +6,14 @@
                     <h2 class="font-weight-bold mb-3">Product List</h2>
                     <table class="table table-bordered table-hovered table-striped">
                         <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th width="20%">Gambar</th>
                                 <th>Deskripsi</th>
                                 <th>Jumlah</th>
                                 <th>Harga</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,6 +25,9 @@
                                 <td>{{$product -> description}}</td>
                                 <td>{{$product -> qty}}</td>
                                 <td>{{$product -> price}}</td>
+                                <td>
+                                    <button class="fas fa-trash" wire:click="destroy({{$product->id}})"></button>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

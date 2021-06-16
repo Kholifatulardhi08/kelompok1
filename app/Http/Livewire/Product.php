@@ -64,4 +64,19 @@ class Product extends Component
         $this->qty = '';
         $this->price = '';
     }
+
+    public function destroy($id)
+    {
+        $products = ProductModel::find($id);
+
+        if($products) {
+            $products->delete();
+        }
+        //flash message
+        session()->flash('message', 'Data Berhasil Dihapus.');
+        //redirect
+        return view('livewire.product',[
+            'products' => $products
+        ]);
+    }
 }

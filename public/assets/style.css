@@ -1,0 +1,52 @@
+/*style .jumbotron*/
+
+.jumbotron {
+    background-image: url(assets/img/jordan.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    height: 830px;
+    text-align: center;
+    margin-top: -120px;
+}
+.jumbotron .display-4 {
+    color: white;
+    margin-top: 300px;
+}
+.jumbotron p {
+    color: white;
+    font-size: 25px;
+}
+.jumbotron hr{
+    border-color:  #548b87;
+    width: 100%;
+    border-width: 3px;
+}
+.jumbotron .btn {
+    background-color:  #548b87;
+    border: none;
+    border-radius: 25px;
+    padding-right: 20px;
+    padding-left: 20px
+    margin-top: 10px;
+}
+
+/*style slider*/
+.carousel-item {
+    height: 830px;
+}
+.carousel-item .display-4{
+    margin-top: -430px;
+}
+.carousel-item hr{
+    border-color:  #548b87;
+    width: 100%;
+    border-width: 3px;
+}
+.carousel-item .btn {
+    background-color:  #548b87;
+    border: none;
+    border-radius: 25px;
+    padding-right: 20px;
+    padding-left: 20px
+    margin-top: 10px;
+}
