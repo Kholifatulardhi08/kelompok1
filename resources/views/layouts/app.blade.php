@@ -7,8 +7,6 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Kasir | Mari Bayar') }}</title>
-
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -20,13 +18,26 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
     
+    <!-- icon menu -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+     <link rel="icon" type="image/x-icon" href="assets/img/icon.jfif" />
+     <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+  /* Make the image fully responsive */
+  .carousel-inner img {
+    width: 100%;
+    height: 100%;
+  }
+  </style>
+    <title>POS | Mari Bayar</title>
     @livewireStyles
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark" style="background-color: rebeccapurple">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{ url('#') }}">
+                @if (Route::has('login'))
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     Kasir | Mari Bayar
                 </a>
                 @auth
@@ -45,6 +56,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 @endauth
+                @endif
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
