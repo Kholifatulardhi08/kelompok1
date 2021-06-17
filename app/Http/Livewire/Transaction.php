@@ -19,11 +19,9 @@ class Transaction extends Component
         return view('livewire.transaction', compact('transactions'));
     }
 
-    public function destroy($invoice_number){
-        if($invoice_number){
-            $transactions = TransactionModel::where('invoice_number', $invoice_number);
-            $transactions->delete();
-        }
+    public function destroy($id){
+        $transactions = TransactionModel::where('id',$id)->delete();
         return view('livewire.transaction', compact('transactions'));
+    
     }
 }

@@ -24,7 +24,7 @@
                                 <td>{{$transaction->pay}}</td>
                                 <td>{{$transaction->total}}</td>
                                 <td>
-                                    <button class="fas fa-trash" wire:click="destroy()"></button>
+                                <button class="fas fa-trash" wire:click="destroy({{$transaction->id}})"></button>
                                 </td>
                             </tr>
                             @endforeach
